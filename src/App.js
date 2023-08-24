@@ -67,6 +67,9 @@ const App = () => {
 	}
 
 	const reset = () => {
+		const beepElem = document.getElementById('beep')
+		beepElem.pause();
+		beepElem.currentTime = 0;
 		setBreakLength(5 * 60);
 		setSessionLength(25 * 60);
 		setTimeLeft(25 * 60);
@@ -140,21 +143,20 @@ const App = () => {
 
 		if (timeLeft === 0) {
 			const beepElem = document.getElementById('beep')
+			beepElem.pause();
+			beepElem.currentTime = 0;
 			beepElem.play();
+			if (timerLabel === 'session') {
+				setTimerLabel('break');
+				setTimeLeft(breakLength);
+				return;
+			}
 
-			// setTimeout(() => {
-				if (timerLabel === 'session') {
-					setTimerLabel('break');
-					setTimeLeft(breakLength);
-					return;
-				}
-
-				if (timerLabel === 'break') {
-					setTimerLabel('session');
-					setTimeLeft(sessionLength);
-					return;
-				}
-			// }, 1000);
+			if (timerLabel === 'break') {
+				setTimerLabel('session');
+				setTimeLeft(sessionLength);
+				return;
+			}
 		}
 	}, isTimerRunning ? delay : null)
 
