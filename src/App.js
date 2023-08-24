@@ -34,7 +34,17 @@ const App = () => {
 	const [delay, setDelay] = useState(1000);
 
 	const convertSecondsToMinutesAndSeconds = (time) => {
-		const minutes = Math.floor(time / 60);
+		if (time < 0) {
+			return {
+				minutes: '00',
+				seconds: '00'
+			}
+		}
+		let minutes = Math.floor(time / 60);
+		if (minutes < 10) {
+			minutes = '0' + minutes;
+		}
+
 		let seconds;
 		if (time - (minutes * 60) < 10) {
 			seconds = `0${time - (minutes * 60)}`;
