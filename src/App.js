@@ -12,32 +12,26 @@ const useInterval = (callback, delay) => {
   });
 
   useEffect(() => {
-    function tick() {
+		const tick = () => {
       savedCallback.current();
     }
 
 		if (delay !== null) {
-			let id = setInterval(tick, delay);
+			const id = setInterval(tick, delay);
 			return () => clearInterval(id);
 		}
   }, [delay]);
 }
 
 const App = () => {
-	/* 
-	 * need to track time
-	 * need to track session or break flag
-	 *
-	 * */	
-
 	// times always stored in seconds
-	
-
 	const [timerLabel, setTimerLabel] = useState('session');
 	const [breakLength, setBreakLength] = useState(5 * 60);
 	const [sessionLength, setSessionLength] = useState(25 * 60);
 	const [timeLeft, setTimeLeft] = useState((25 * 60));
 	const [isTimerRunning, setIsTimerRunning] = useState(false);
+	// this doesn't need to be used probably
+	const [delay, setDelay] = useState(1000);
 
 	const convertSecondsToMinutesAndSeconds = (time) => {
 		const minutes = Math.floor(time / 60);
@@ -67,7 +61,7 @@ const App = () => {
 		setSessionLength(25 * 60);
 		setTimeLeft(25 * 60);
 		setTimerLabel('session');
-		toggleTimer(true);
+		setIsTimerRunning(false);
 		return null;
 	}
 
@@ -107,11 +101,7 @@ const App = () => {
 		// decrease break length but no less than 1 minute
 	}
 
-	const toggleTimer = (forceStop = false) => {
-		if (forceStop === true) {
-			setIsTimerRunning(false);
-			return null;
-		}
+	const toggleTimer = () => {
 		setIsTimerRunning(!isTimerRunning);
 		return null;
 	}
@@ -120,49 +110,43 @@ const App = () => {
 	useEffect(() => {
 		if (timerLabel === 'session') {
 			setTimeLeft(sessionLength);
+			return;
 		}
+	}, [timerLabel, sessionLength])
+
+	useEffect(() => {
 		if (timerLabel === 'break') {
 			setTimeLeft(breakLength);
+			return;
 		}
-	}, [timerLabel, breakLength, sessionLength])
+	}, [timerLabel, breakLength])
 
 	// countdown effect
-	useEffect(() => {
-		let interval = null;
-		console.log(timeLeft);
-		console.log(timerLabel);
+	useInterval(() => {
+		if (timeLeft > 0) {
+			setTimeLeft(timeLeft - 1);
+			return;
+		}
+
 		if (timeLeft === 0) {
-			const beepElem = document.getElementById('beep');
+			const beepElem = document.getElementById('beep')
 			beepElem.play();
-			if (timerLabel === 'session') {
-				setTimerLabel('break');
-				setTimeLeft(breakLength);
-			} else {
-				setTimerLabel('session');
-				setTimeLeft(sessionLength);
-			}
 
-			setIsTimerRunning(false); // Pause the timer
-			setTimeout(() => {
-				setIsTimerRunning(true); // Resume the timer after 1 second
-			}, 1000);
+			// setTimeout(() => {
+				if (timerLabel === 'session') {
+					setTimerLabel('break');
+					setTimeLeft(breakLength);
+					return;
+				}
+
+				if (timerLabel === 'break') {
+					setTimerLabel('session');
+					setTimeLeft(sessionLength);
+					return;
+				}
+			// }, 1000);
 		}
-
-
-		if (isTimerRunning) {
-			interval = setInterval(() => {
-				setTimeLeft(prevTimeLeft => {
-					if (prevTimeLeft > 0) {
-						return prevTimeLeft - 1;
-					}
-					return prevTimeLeft;
-				});
-			}, 100);
-		} else if (!isTimerRunning) {
-			clearInterval(interval);
-		}
-		return () => clearInterval(interval);
-	}, [isTimerRunning, timeLeft, breakLength, sessionLength, timerLabel]);
+	}, isTimerRunning ? delay : null)
 
   return (
 		<div id='container'>
