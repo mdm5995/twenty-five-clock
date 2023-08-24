@@ -63,7 +63,7 @@ const App = () => {
 	}
 
 	const getMinutes = (convertedTime) => {
-		return convertedTime.minutes;
+		return parseInt(convertedTime.minutes);
 	}
 
 	const reset = () => {
