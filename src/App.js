@@ -1,5 +1,5 @@
 import {useState, useEffect, useRef} from 'react';
-import beep from './audio/beep-01a.mp3';
+import beep from './audio/alarm-finished-beeps.mp3';
 import './App.css';
 
 // courtesy Dan Abramov
