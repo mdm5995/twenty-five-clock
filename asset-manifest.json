@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/twenty-five-clock/static/css/main.674bc71b.css",
+    "main.js": "/twenty-five-clock/static/js/main.2f168a93.js",
+    "static/js/787.857b82f7.chunk.js": "/twenty-five-clock/static/js/787.857b82f7.chunk.js",
+    "static/media/alarm-finished-beeps.mp3": "/twenty-five-clock/static/media/alarm-finished-beeps.19d328cae9f8f13824fe.mp3",
+    "index.html": "/twenty-five-clock/index.html",
+    "main.674bc71b.css.map": "/twenty-five-clock/static/css/main.674bc71b.css.map",
+    "main.2f168a93.js.map": "/twenty-five-clock/static/js/main.2f168a93.js.map",
+    "787.857b82f7.chunk.js.map": "/twenty-five-clock/static/js/787.857b82f7.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.674bc71b.css",
+    "static/js/main.2f168a93.js"
+  ]
+}
